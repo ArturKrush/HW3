@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Homework3
 {
-    public class MyArray : IOutput, IMath
+    public class MyArray : IOutput, IMath, ISort
     {
         public int[] MyArr
         {
@@ -76,6 +76,55 @@ namespace Homework3
                     return true;
             }
             return false;
+        }
+
+        public void SortAsc()
+        {
+            QuickSort(MyArr, 0, MyArr.Length - 1, true);
+        }
+
+        public void SortDesc()
+        {
+            QuickSort(MyArr, 0, MyArr.Length - 1, false);
+        }
+
+        // "Швидке" сортування як алгоритм сортування
+        private void QuickSort(int[] arr, int left, int right, bool ascending)
+        {
+            int i = left, j = right;
+            int pivot = arr[(left + right) / 2];
+
+            while (i <= j)
+            {
+                if (ascending)
+                {
+                    while (arr[i] < pivot) i++;
+                    while (arr[j] > pivot) j--;
+                }
+                else
+                {
+                    while (arr[i] > pivot) i++;
+                    while (arr[j] < pivot) j--;
+                }
+
+                if (i <= j)
+                {
+                    // Перестановка елементів місцями
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+
+            if (left < j) QuickSort(arr, left, j, ascending);
+            if (i < right) QuickSort(arr, i, right, ascending);
+        }
+
+        public void SortByParam(bool isAsc)
+        {
+            QuickSort(MyArr, 0, MyArr.Length - 1, isAsc);
         }
     }
 }
